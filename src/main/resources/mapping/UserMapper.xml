@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chat.dao.UserDao">
+
+  <insert id="insert" parameterType="com.chat.vo.entity.User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    INSERT INTO user
+    (
+      e_mail,telephone,password,name,nickname,head_portraits,
+      create_time,update_time,is_delete
+    )
+    VALUES
+    (
+      #{eMail},#{telephone},#{password},#{name},#{nickname},#{headPortraits},
+      #{createTime},#{updateTime},#{isDelete}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.chat.vo.entity.User">
+    UPDATE user
+    <set>
+      e_mail = #{eMail},
+      telephone = #{telephone},
+      password = #{password},
+      name = #{name},
+      nickname = #{nickname},
+      head_portraits = #{headPortraits},
+      update_time = #{updateTime},
+      is_delete = #{isDelete}
+    </set>
+    WHERE id = #{id}
+  </update>
+  <!--全字段-->
+  <sql id="Base_Column_List">
+    id, e_mail, telephone,password, name,nickname,head_portraits,
+    create_time, update_time, is_delete
+  </sql>
+
+  <select id="getUserByEmailAndPassword" resultType="com.chat.vo.entity.User">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM user WHERE e_mail = #{eMail} AND password = #{password} AND is_delete = 0 ORDER BY update_time
+  </select>
+  <select id="getUserByEmail" resultType="com.chat.vo.entity.User">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM user WHERE e_mail = #{eMail}  AND is_delete = 0 ORDER BY update_time
+  </select>
+  <select id="getUserById" resultType="com.chat.vo.entity.User">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM user WHERE id = #{id}  AND is_delete = 0 ORDER BY update_time
+  </select>
+
+</mapper>
